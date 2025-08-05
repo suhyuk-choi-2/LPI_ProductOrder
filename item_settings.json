@@ -1,0 +1,83 @@
+{
+    "master_defaults": {
+        "lead_time": 7,
+        "safety_stock_rate": 0,
+        "addition_rate": 0,
+        "order_unit": 5,
+        "min_sales": 1
+    },
+    "defaults": {
+        "하이온": {
+            "lead_time": 7,
+            "safety_stock_rate": 10,
+            "addition_rate": 0,
+            "order_unit": 5,
+            "min_sales": 5
+        }
+    },
+    "overrides": {
+        "211011111": {
+            "lead_time": 7,
+            "safety_stock_rate": 10,
+            "addition_rate": 0,
+            "order_unit": 2,
+            "min_sales": 0
+        },
+        "702037108": {
+            "lead_time": 4,
+            "safety_stock_rate": 10,
+            "addition_rate": 0,
+            "order_unit": 2,
+            "min_sales": 0
+        },
+        "211011163": {
+            "lead_time": 7,
+            "safety_stock_rate": 10,
+            "addition_rate": 0,
+            "order_unit": 10,
+            "min_sales": 10
+        },
+        "101067213": {
+            "lead_time": 7,
+            "safety_stock_rate": 5,
+            "addition_rate": 0,
+            "order_unit": 10,
+            "min_sales": 10
+        },
+        "104845093": {
+            "lead_time": 7,
+            "safety_stock_rate": 0,
+            "addition_rate": 0,
+            "order_unit": 5,
+            "min_sales": 1
+        },
+        "103237014": {
+            "lead_time": 10,
+            "safety_stock_rate": 5,
+            "addition_rate": 0,
+            "order_unit": 5,
+            "min_sales": 10
+        },
+        "102297001": {
+            "lead_time": 5,
+            "safety_stock_rate": 8,
+            "addition_rate": 0,
+            "order_unit": 3,
+            "min_sales": 5
+        },
+        "204018161": {
+            "lead_time": 10,
+            "safety_stock_rate": 8,
+            "addition_rate": 0,
+            "order_unit": 3,
+            "min_sales": 5
+        },
+        "403126001": {
+            "lead_time": 10,
+            "safety_stock_rate": 5,
+            "addition_rate": 0,
+            "order_unit": 5,
+            "min_sales": 5
+        }
+    }
+}
