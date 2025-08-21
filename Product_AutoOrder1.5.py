@@ -112,7 +112,7 @@ def create_settings_export_data(df_filtered: pd.DataFrame, settings: Dict[str, D
                 '안전재고율(%)': final_settings.get('safety_stock_rate', 10),
                 '가산율(%)': final_settings.get('addition_rate', 0),
                 '발주단위': final_settings.get('order_unit', 5),
-                '제외매출수량': final_settings.get('min_sales', 0),
+                '제외판매수량': final_settings.get('min_sales', 0),
                 '설정구분': setting_source
             }
             export_data.append(export_row)
@@ -195,7 +195,7 @@ with title_col2:
                 st.markdown("""
                 ### 📂 1. 입력 항목 설명
                 • **시작일/종료일**: 매출 분석 기간 설정 (기본: 30일)  
-                • **제외 매출수량**: 입력값 미만 품목은 계산에서 제외  
+                • **제외판매수량**: 입력값 미만 품목은 계산에서 제외  
                 • **리드타임(재발주 기간)(일)**: 발주 후 입고까지 소요 기간(재발주 기간)  
                 • **안전재고율(%)**: 리드타임(재발주 기간) 동안 예상 매출의 추가 보유 비율  
                 • **가산율(%)**: 계산된 발주량에 추가하는 여유분 비율  
@@ -362,7 +362,7 @@ with title_col2:
                     * **안전재고율(%)**: 갑작스러운 주문 증가에 대비해 추가로 확보할 재고의 비율. (예: 10% 설정 시, 리드타임(재발주 기간) 동안 팔릴 양의 10%를 추가로 확보)
                     * **가산율(%)**: 계산된 발주량에 추가로 더할 여유분의 비율.
                     * **발주단위**: 상품을 주문할 때의 최소 묶음 단위. (예: 5로 설정 시, 12개 필요 -> 15개로 발주)
-                    * **제외 매출수량**: 여기서 설정한 수량 미만으로 팔린 상품은 아예 계산에서 제외합니다.
+                    * **제외판매수량**: 여기서 설정한 수량 미만으로 팔린 상품은 아예 계산에서 제외합니다.
 
                 * **`[전체]` 매입처별 기본값 설정**
                     * 특정 거래처(매입처)의 상품들에만 다른 규칙을 적용하고 싶을 때 사용합니다.
@@ -390,7 +390,7 @@ with title_col2:
                 2.  **기능**: 현재 선택된 매입처 필터의 모든 품목 설정값을 엑셀 파일로 다운로드
                 3.  **다운로드되는 정보**:
                     * 상품코드
-                    * 리드타임(재발주기간), 안전재고율, 가산율, 발주단위, 제외매출수량
+                    * 리드타임(재발주기간), 안전재고율, 가산율, 발주단위, 제외판매수량
                     * **설정구분**: 각 상품이 어떤 설정을 사용하고 있는지 표시
                         * **마스터 기본값**: 시스템 전체 기본값 사용
                         * **매입처별 기본값**: 해당 매입처 전용 설정 사용
@@ -467,7 +467,7 @@ with st.expander("2. 발주 설정 관리"):
         new_master_safety_rate = master_cols[1].number_input("안전재고율(%)", min_value=0, value=master_defaults.get('safety_stock_rate'), key="master_sr")
         new_master_addition_rate = master_cols[2].number_input("가산율(%)", min_value=0, value=master_defaults.get('addition_rate'), key="master_ar")
         new_master_order_unit = master_cols[3].number_input("발주단위", min_value=1, value=master_defaults.get('order_unit'), key="master_ou")
-        new_master_min_sales = master_cols[4].number_input("제외 매출수량", min_value=0, value=master_defaults.get('min_sales', 0), key="master_ms")
+        new_master_min_sales = master_cols[4].number_input("제외판매수량", min_value=0, value=master_defaults.get('min_sales', 0), key="master_ms")
 
         if st.button("마스터 기본값 저장", key="master_save"):
             st.session_state.settings["master_defaults"] = {
@@ -489,7 +489,7 @@ with st.expander("2. 발주 설정 관리"):
         safety_stock_rate = col2.number_input("안전재고율(%)", min_value=0, value=current_defaults.get('safety_stock_rate'), key=f"d_sr_{supplier_to_edit}")
         addition_rate = col3.number_input("가산율(%)", min_value=0, value=current_defaults.get('addition_rate'), key=f"d_ar_{supplier_to_edit}")
         order_unit = col4.number_input("발주단위", min_value=1, value=current_defaults.get('order_unit'), key=f"d_ou_{supplier_to_edit}")
-        min_sales = col5.number_input("제외 매출수량", min_value=0, value=current_defaults.get('min_sales', master_defaults.get('min_sales', 0)), key=f"d_ms_{supplier_to_edit}")
+        min_sales = col5.number_input("제외판매수량", min_value=0, value=current_defaults.get('min_sales', master_defaults.get('min_sales', 0)), key=f"d_ms_{supplier_to_edit}")
 
         btn_col1, btn_col2, _ = st.columns([1,1,4])
         if btn_col1.button("저장", key=f"d_save_{supplier_to_edit}"):
@@ -515,7 +515,7 @@ with st.expander("2. 발주 설정 관리"):
                 f"안전재고율: {settings.get('safety_stock_rate',0)}% &nbsp;|&nbsp; "
                 f"가산율: {settings.get('addition_rate',0)}% &nbsp;|&nbsp; "
                 f"발주단위: {settings.get('order_unit', 1)}개 &nbsp;|&nbsp; "
-                f"제외 매출수량: {settings.get('min_sales', '미설정')}개"
+                f"제외판매수량: {settings.get('min_sales', '미설정')}개"
             )
             st.markdown(f"**{i}. {supplier}** &nbsp;|&nbsp; {settings_str}")
 
@@ -714,7 +714,7 @@ if not st.session_state.result_df.empty:
             new_safety_rate = col2.number_input("안전재고율(%)", min_value=0, value=final_display_settings.get('safety_stock_rate'), key=f"o_sr_{item_code_to_edit}")
             new_addition_rate = col3.number_input("가산율(%)", min_value=0, value=final_display_settings.get('addition_rate'), key=f"o_ar_{item_code_to_edit}")
             new_order_unit = col4.number_input("발주단위", min_value=1, value=final_display_settings.get('order_unit'), key=f"o_ou_{item_code_to_edit}")
-            new_min_sales = col5.number_input("제외 매출수량", min_value=0, value=final_display_settings.get('min_sales', master_defaults.get('min_sales',0)), key=f"o_ms_{item_code_to_edit}")
+            new_min_sales = col5.number_input("제외판매수량", min_value=0, value=final_display_settings.get('min_sales', master_defaults.get('min_sales',0)), key=f"o_ms_{item_code_to_edit}")
             
             btn_col1, btn_col2, _ = st.columns([1,1,4])
             if btn_col1.button("개별 설정 저장", key=f"o_save_{item_code_to_edit}"):
@@ -759,7 +759,7 @@ if not st.session_state.result_df.empty:
                     if 'safety_stock_rate' in settings: settings_str_parts.append(f"안전재고율: {settings['safety_stock_rate']}%")
                     if 'addition_rate' in settings: settings_str_parts.append(f"가산율: {settings['addition_rate']}%")
                     if 'order_unit' in settings: settings_str_parts.append(f"발주단위: {settings['order_unit']}개")
-                    if 'min_sales' in settings: settings_str_parts.append(f"제외 매출수량: {settings['min_sales']}개")
+                    if 'min_sales' in settings: settings_str_parts.append(f"제외판매수량: {settings['min_sales']}개")
                     
                     st.markdown(f"**{i}. {code}{item_name_str}** &nbsp;|&nbsp; " + " &nbsp;|&nbsp; ".join(settings_str_parts))
 
