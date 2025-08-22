@@ -56,7 +56,7 @@ def load_settings() -> Dict[str, Dict]:
     return {"master_defaults": INITIAL_DEFAULT_SETTINGS.copy(), "defaults": {}, "overrides": {}}
 
 # REPO_NAME을 본인의 GitHub 저장소 정보로 수정하세요.
-REPO_NAME = "suhyuk-choi/SCM_AutoOrder1.0" 
+REPO_NAME = "suhyuk-choi-2/LPI_ProductOrder" 
 SETTINGS_FILE = "item_settings.json"
 
 def save_settings(settings: Dict[str, Dict]):
@@ -851,4 +851,5 @@ if not st.session_state.result_df.empty:
     else:
 
         st.info(f"'{dashboard_title_prefix}'에서 초과재고로 분류된 품목이 없습니다.")
+
 
