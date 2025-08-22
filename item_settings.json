@@ -85,6 +85,13 @@
             "addition_rate": 0,
             "order_unit": 5,
             "min_sales": 5
+        },
+        "211011177": {
+            "lead_time": 15,
+            "safety_stock_rate": 10,
+            "addition_rate": 0,
+            "order_unit": 100,
+            "min_sales": 10
         }
     }
 }
