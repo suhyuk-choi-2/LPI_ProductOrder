@@ -6,6 +6,7 @@ import json
 import os
 import math
 import datetime
+from github import Github
 from typing import Dict, Optional
 from pathlib import Path
 from io import BytesIO
@@ -850,3 +851,4 @@ if not st.session_state.result_df.empty:
     else:
 
         st.info(f"'{dashboard_title_prefix}'에서 초과재고로 분류된 품목이 없습니다.")
+
