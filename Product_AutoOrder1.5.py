@@ -54,9 +54,43 @@ def load_settings() -> Dict[str, Dict]:
             return settings
     return {"master_defaults": INITIAL_DEFAULT_SETTINGS.copy(), "defaults": {}, "overrides": {}}
 
+# REPO_NAME을 본인의 GitHub 저장소 정보로 수정하세요.
+REPO_NAME = "suhyuk-choi/SCM_AutoOrder1.0" 
+SETTINGS_FILE = "item_settings.json"
+
 def save_settings(settings: Dict[str, Dict]):
-    with open(SETTINGS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(settings, f, ensure_ascii=False, indent=4)
+    """Streamlit 앱의 설정 변경사항을 GitHub 저장소의 JSON 파일에 직접 저장합니다."""
+    try:
+        # 1. Streamlit Secrets에서 GitHub 토큰 가져오기
+        github_token = st.secrets["GITHUB_TOKEN"]
+        g = Github(github_token)
+
+        # 2. GitHub 저장소(Repository) 정보 가져오기
+        repo = g.get_repo(REPO_NAME)
+
+        # 3. 업데이트할 파일의 현재 정보(sha) 가져오기
+        contents = repo.get_contents(SETTINGS_FILE, ref="main") # 사용하시는 브랜치명이 main이 아니면 수정
+
+        # 4. 저장할 새로운 내용을 JSON 문자열로 변환
+        new_content = json.dumps(settings, ensure_ascii=False, indent=4)
+
+        # 5. GitHub에 파일 업데이트 요청 (커밋 생성)
+        kst = datetime.timezone(datetime.timedelta(hours=9))
+        commit_message = f"설정 업데이트: {datetime.datetime.now(kst).strftime('%Y-%m-%d %H:%M:%S KST')}"
+
+        repo.update_file(
+            path=contents.path,
+            message=commit_message,
+            content=new_content,
+            sha=contents.sha,
+            branch="main" # 사용하시는 브랜치명이 main이 아니면 수정
+        )
+        st.success("설정이 GitHub에 성공적으로 저장되었습니다!")
+        st.toast("GitHub 반영 후 앱이 곧 자동 재시작될 수 있습니다.", icon="🔄")
+
+    except Exception as e:
+        st.error(f"GitHub 저장 중 오류가 발생했습니다: {e}")
+        st.warning("수동으로 PC에서 파일을 수정 후 Push하는 방법을 사용해주세요.")
 
 def find_latest_file(directory: Path, pattern: str) -> Optional[Path]:
     try:
@@ -814,4 +848,5 @@ if not st.session_state.result_df.empty:
         
         st.download_button(label="📥 초과재고 현황 엑셀 다운로드", data=overstock_output.getvalue(), file_name=f"초과재고현황_{datetime.datetime.now().strftime('%Y%m%d')}.xlsx")
     else:
+
         st.info(f"'{dashboard_title_prefix}'에서 초과재고로 분류된 품목이 없습니다.")
