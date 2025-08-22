@@ -1,6 +1,6 @@
 {
     "master_defaults": {
-        "lead_time": 7,
+        "lead_time": 15,
         "safety_stock_rate": 0,
         "addition_rate": 0,
         "order_unit": 5,
