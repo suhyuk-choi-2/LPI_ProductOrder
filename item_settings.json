@@ -99,6 +99,13 @@
             "addition_rate": 0,
             "order_unit": 100,
             "min_sales": 10
+        },
+        "102572043": {
+            "lead_time": 15,
+            "safety_stock_rate": 0,
+            "addition_rate": 0,
+            "order_unit": 5,
+            "min_sales": 2
         }
     }
 }
